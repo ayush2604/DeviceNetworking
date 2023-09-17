@@ -25,7 +25,7 @@ public class Configuration {
 
     private void init(){
         jsonparser = new JSONParser();
-        try { file = new FileReader("\\D:\\Programs\\Java\\IoT\\DeviceNetworking\\config\\config.json"); }
+        try { file = new FileReader("./config/config.json"); }
         catch(FileNotFoundException fileNotFoundException){
             System.out.println("Configuration file not found.");
         }
