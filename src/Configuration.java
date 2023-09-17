@@ -7,8 +7,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.json.JSONObject;
-import org.json.simple.parser.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class Configuration {
 
@@ -25,28 +25,27 @@ public class Configuration {
 
     private void init(){
         jsonparser = new JSONParser();
-
-        try { file = new FileReader(".\\config\\config.json"); }
+        try { file = new FileReader("\\D:\\Programs\\Java\\IoT\\DeviceNetworking\\config\\config.json"); }
         catch(FileNotFoundException fileNotFoundException){
-            System.out.println("Error while reading configurations.");
+            System.out.println("Configuration file not found.");
         }
         try { jsonobj = (JSONObject)jsonparser.parse(file); }
         catch(Exception exception){
             jsonobj = null;
-            System.out.println("Error while reading configurations.");
+            System.out.println("Error while reading configurations. Error: " + exception);
         }
     }
 
     public Connection getConnection(){
         String username = (String)jsonobj.get("username");
         String password = (String)jsonobj.get("password");
-        int portNumber = (int)jsonobj.get("portNumber");
+        long portNumber = (long)jsonobj.get("portNumber");
         Connection connection;
-        String url = "jdbc:mysql://localhost::" + Integer.toString(portNumber);
+        String url = "jdbc:mysql://localhost:" + Long.toString(portNumber);
         try { connection = DriverManager.getConnection(url, username, password); }
         catch(SQLException sqlexception){
             connection = null;
-            System.out.println("Error while connection to the database.");
+            System.out.println("Error while connection to the database. \nError: " + sqlexception);
         }
         return connection;
     }
