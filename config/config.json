@@ -1,6 +1,4 @@
 {
     "database":"devicenetworking",
-    "portNumber":3306,
-    "username":"root",
-    "password":"1Skghmhnnv."
+    "portNumber":3306
 }
