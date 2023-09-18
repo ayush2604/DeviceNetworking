@@ -77,7 +77,7 @@ public class Login extends JFrame implements ActionListener{
         }
         String databaseName = (String)config.getConfiguration().get("database");
         String query = "CREATE DATABASE IF NOT EXISTS " + databaseName + ";";
-        try {  statement.executeQuery(query); }
+        try {  statement.executeUpdate(query); }
         catch( SQLException sqlexception1){
             System.out.println("Error while creating database.\nError: " + sqlexception1);
         }
