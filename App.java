@@ -4,7 +4,7 @@ public class App {
     Database database;
 
     App(){
-        database = new Database();
+        database = new Database();   
     }
 
     private void printStatus(){

@@ -6,8 +6,8 @@ public class Database {
     Configuration configuration;
     Connection connection;
     public Database(){
-        configuration = new Configuration();
-        connection = configuration.getConnection();
-        configuration.initialiseDatabase(connection);
+        Login login = new Login();
+        connection = login.getConnection();
+        configuration = login.getConfiguration();
     }
 }
