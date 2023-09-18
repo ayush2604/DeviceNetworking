@@ -1,5 +1,6 @@
 package src;
 class Encryption {
+    
     public int encrypt(int data){
         return data;
     }

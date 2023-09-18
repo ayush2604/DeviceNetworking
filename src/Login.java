@@ -16,6 +16,7 @@ public class Login extends JFrame implements ActionListener{
     String username, password;
     Connection connection;
     Configuration config;
+    Statement statement;
 
     Login(){
         userLabel = new JLabel();  
@@ -69,26 +70,25 @@ public class Login extends JFrame implements ActionListener{
     }
 
     private void initialiseDatabase (){
-        Statement statement;
         try { statement = connection.createStatement();}
         catch( SQLException sqlexception1){
             statement = null;
-            System.out.println("Error while creating database");
+            System.out.println("Error while creating database.\nError: " + sqlexception1);
         }
         String databaseName = (String)config.getConfiguration().get("database");
         String query = "CREATE DATABASE IF NOT EXISTS " + databaseName + ";";
-        int count = 0;
-        try { 
-            count = statement.executeUpdate(query); 
-            System.out.println("Number of rows affected: " + count);
-        }
+        try {  statement.executeQuery(query); }
         catch( SQLException sqlexception1){
-            System.out.println("Error while creating database.");
+            System.out.println("Error while creating database.\nError: " + sqlexception1);
         }
     }
 
     public Connection getConnection(){
         return this.connection;
+    }
+
+    public Statement getStatement(){
+        return this.statement;
     }
 
     public Configuration getConfiguration(){
