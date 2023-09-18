@@ -1,7 +1,6 @@
 package src;
 
 import javax.swing.*;
-import org.json.simple.JSONObject;
 import java.awt.*;  
 import java.awt.event.*;
 import java.sql.Connection;
