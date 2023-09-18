@@ -53,7 +53,7 @@ public class Login extends JFrame implements ActionListener{
         username = userValue;
         password = passValue;
         connectToDatabase();
-        initialiseDatabase(connection);
+        initialiseDatabase();
         setVisible(false);
         dispose();
     }
@@ -68,7 +68,7 @@ public class Login extends JFrame implements ActionListener{
         }
     }
 
-    private void initialiseDatabase (Connection connection){
+    private void initialiseDatabase (){
         Statement statement;
         try { statement = connection.createStatement();}
         catch( SQLException sqlexception1){
