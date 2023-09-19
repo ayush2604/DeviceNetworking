@@ -11,5 +11,7 @@ public final class Constants {
     public static final String DATE_FORMAT = "yyyymmdd";
     public static final String COLUMN_NAME = "columnName";
     public static final String DATATYPE = "dataType";
+    public static final String NUMBER_OF_GATEWAYS = "numberOfGateways";
+    public static final String NUMBER_OF_DEVICES_IN_GATEWAY = "numberOfDevicesInEachGateway";
 }
  

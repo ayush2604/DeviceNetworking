@@ -15,5 +15,7 @@
         {"columnName":"DATA","dataType":"VARCHAR(32)"},
         {"columnName":"METADATA","dataType":"TIMESTAMP"}
     ],
-    "portNumber":3306
+    "portNumber":3306,
+    "numberOfGateways":8,
+    "numberOfDevicesInEachGateway":2
 }

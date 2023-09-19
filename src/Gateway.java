@@ -10,18 +10,28 @@ public class Gateway {
     DatabaseConnection databaseConnection;
     Configuration configuration;
 
-    public Gateway(Configuration _configuration, int _gatewayID){
-        gatewayID = _gatewayID;
+    public Gateway(Configuration _configuration){
         configuration = _configuration;
         databaseConnection = new DatabaseConnection(configuration);
-        gatewayDatabase = new Database (configuration.getGatewayDatabaseName(gatewayID), databaseConnection);
-        gatewayDatabase.createDatabase();
-        gatewayDatabase.useDatabase();
-        createGatewayDataLedger();
     }
 
     private void createGatewayDataLedger(){
         Map<String,String> schema = configuration.getGatewayDatabaseSchema();
         gatewayDatabase.createTable(configuration.getGatewayDatabaseTableName(gatewayID), schema);
     }  
+
+    public void setGatewayID(int id){
+        this.gatewayID = id;
+    }
+
+    public void initialiseGatewayDatabase(){
+        gatewayDatabase = new Database (configuration.getGatewayDatabaseName(gatewayID), databaseConnection);
+        gatewayDatabase.createDatabase();
+        gatewayDatabase.useDatabase();
+        createGatewayDataLedger();
+    }
+
+    public int getGatewayID(){
+        return this.gatewayID;
+    }
 }

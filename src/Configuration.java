@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,9 +46,7 @@ public class Configuration {
     }
 
     private String dateToday(){
-        Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-        return dateFormat.format(date);
+        return String.format("%s", DateTimeFormatter.ofPattern("ddMMYYYY").format(LocalDate.now()));
     }
 
     private Map<String,String> getSchema (String key){
@@ -98,5 +98,13 @@ public class Configuration {
 
     public long getPortNumber(){
         return (long) jsonobj.get(PORT_NUMBER);
+    }
+
+    public int getNumberOfGateways(){
+        return ((Long) jsonobj.get(NUMBER_OF_GATEWAYS)).intValue();
+    }
+
+    public int getNumberOfDevicesInGateway(){
+        return ((Long) jsonobj.get(NUMBER_OF_DEVICES_IN_GATEWAY)).intValue();
     }
 }

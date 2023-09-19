@@ -7,10 +7,16 @@ public class App {
 
     private String username, password;
     Cloud cloud;
-    Gateway gateway;
+    Gateway gateways[];
     Configuration configuration;
     
     App(){
+        loginProcess();
+        initialiseGateways();
+        cloud = new Cloud(configuration, gateways);
+    }
+
+    private void loginProcess(){
         Login login = new Login();
         try {
             username = login.getUsername();
@@ -19,8 +25,11 @@ public class App {
             System.out.println("Error: " + interruptedException);
         }
         configuration = new Configuration(username, password);
-        cloud = new Cloud(configuration);
-        gateway = new Gateway(configuration, 0);
+    }
+
+    private void initialiseGateways(){
+        gateways = new Gateway[configuration.getNumberOfGateways()];
+        for(int i = 0; i < configuration.getNumberOfGateways(); i++) gateways[i] = new Gateway(configuration);
     }
 
     private void printStatus() {
