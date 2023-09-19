@@ -1,4 +1,15 @@
 {
-    "database":"devicenetworking",
-    "portNumber":3306
+    "database":"centralDatabase",
+    "columns":[
+        {"columnName":"FROM_DEVICE","dataType":"VARCHAR(32)"},
+        {"columnName":"TO_DEVICE","dataType":"VARCHAR(32)"},
+        {"columnName":"DATA","dataType":"VARCHAR(32)"},
+        {"columnName":"METADATA","dataType":"TIMESTAMP"}
+    ],
+    "portNumber":3306,
+    "tables":[
+        {
+            "name":"centralDataLedger"
+        }
+    ]
 }

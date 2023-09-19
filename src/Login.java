@@ -3,22 +3,16 @@ package src;
 import javax.swing.*;
 import java.awt.*;  
 import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;  
 
-public class Login extends JFrame implements ActionListener{
+public class Login extends JFrame implements ActionListener {
     JButton b1;  
     JPanel newPanel;  
     JLabel userLabel, passLabel;  
     final JTextField  textField1, textField2;  
     String username, password;
-    Connection connection;
-    Configuration config;
-    Statement statement;
+    boolean actionPerformed;
 
-    Login(){
+    public Login(){
         userLabel = new JLabel();  
         userLabel.setText("Username");
         textField1 = new JTextField(15); 
@@ -35,63 +29,37 @@ public class Login extends JFrame implements ActionListener{
         add(newPanel, BorderLayout.CENTER);     
         b1.addActionListener(this);   
         setTitle("ENTER DATABASE CREDENTIALS");   
-        setSize(300,150); 
+        setSize(400,150); 
         setVisible(true); 
         setLocation(600,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         username = "";
         password = "";
-        config = new Configuration();
+        actionPerformed = false;
     }
 
     public void printStatus(){
         System.out.println("Login process initiated.");
     }
 
-    public void actionPerformed(ActionEvent ae) {  
+    public synchronized void actionPerformed(ActionEvent ae) {  
         String userValue = textField1.getText();        
         String passValue = textField2.getText();  
         username = userValue;
         password = passValue;
-        connectToDatabase();
-        initialiseDatabase();
+        actionPerformed = true;
+        notifyAll();
         setVisible(false);
         dispose();
     }
-
-    private void connectToDatabase(){
-        long portNumber = (long)config.getConfiguration().get("portNumber");
-        String url = "jdbc:mysql://localhost:" + Long.toString(portNumber);
-        try { connection = DriverManager.getConnection(url, username, password); }
-        catch(SQLException sqlexception){
-            connection = null;
-            System.out.println("Error while connection to the database. \nError: " + sqlexception);
-        }
+    
+    public synchronized String getUsername () throws InterruptedException{
+        while ( !actionPerformed ) wait();
+        return username;
     }
 
-    private void initialiseDatabase (){
-        try { statement = connection.createStatement();}
-        catch( SQLException sqlexception1){
-            statement = null;
-            System.out.println("Error while creating database.\nError: " + sqlexception1);
-        }
-        String databaseName = (String)config.getConfiguration().get("database");
-        String query = "CREATE DATABASE IF NOT EXISTS " + databaseName + ";";
-        try {  statement.executeUpdate(query); }
-        catch( SQLException sqlexception1){
-            System.out.println("Error while creating database.\nError: " + sqlexception1);
-        }
-    }
-
-    public Connection getConnection(){
-        return this.connection;
-    }
-
-    public Statement getStatement(){
-        return this.statement;
-    }
-
-    public Configuration getConfiguration(){
-        return this.config;
+    public synchronized String getPassword () throws InterruptedException{
+        while ( !actionPerformed ) wait();
+        return password;
     }
 }
