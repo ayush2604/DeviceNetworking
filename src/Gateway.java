@@ -1,16 +1,18 @@
 package src;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Gateway {
 
     int gatewayID;
-    Device connectedDevices[];
+    Map<Integer,Device> connectedDevices;
     Database gatewayDatabase;
     DatabaseConnection databaseConnection;
     Configuration configuration;
 
     public Gateway(Configuration _configuration){
+        connectedDevices = new HashMap<>();
         configuration = _configuration;
         databaseConnection = new DatabaseConnection(configuration);
     }
@@ -29,6 +31,10 @@ public class Gateway {
         gatewayDatabase.createDatabase();
         gatewayDatabase.useDatabase();
         createGatewayDataLedger();
+    }
+
+    public void removeGatewayDatabase(){
+        gatewayDatabase.removeDatabase();
     }
 
     public int getGatewayID(){

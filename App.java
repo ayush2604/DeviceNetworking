@@ -13,7 +13,7 @@ public class App {
     App(){
         loginProcess();
         initialiseGateways();
-        cloud = new Cloud(configuration, gateways);
+        initialiseCloud();
     }
 
     private void loginProcess(){
@@ -29,7 +29,15 @@ public class App {
 
     private void initialiseGateways(){
         gateways = new Gateway[configuration.getNumberOfGateways()];
-        for(int i = 0; i < configuration.getNumberOfGateways(); i++) gateways[i] = new Gateway(configuration);
+        for(int i = 0; i < configuration.getNumberOfGateways(); i++) {
+            gateways[i] = new Gateway(configuration);
+            gateways[i].setGatewayID(i);
+        }
+    }
+
+    private void initialiseCloud(){
+        cloud = new Cloud(configuration);
+        for(Gateway gateway : gateways) cloud.connectGateway(gateway);
     }
 
     private void printStatus() {

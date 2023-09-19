@@ -22,6 +22,10 @@ public class Database {
         executeUpdateQuery("USE " + databaseName + ";");
     }
 
+    public void removeDatabase(){
+        executeUpdateQuery("DROP DATABASE " + databaseName + ";");
+    }
+
     public void executeUpdateQuery (String query){
         try {  databaseConnection.statement.executeUpdate(query); }
         catch( SQLException sqlexception){

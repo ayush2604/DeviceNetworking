@@ -1,30 +1,39 @@
 package src;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Cloud {
     
-    Gateway gateways[];
+    Map<Integer,Gateway> gateways;
+    int numberOfConnectedGateways;
     Database centralDatabase;
     DatabaseConnection databaseConnection;
     Configuration configuration;
 
-    public Cloud(Configuration _configuration, Gateway _gateways[]){
+    public Cloud(Configuration _configuration){
         configuration = _configuration;
-        gateways = _gateways;
+        numberOfConnectedGateways = 0;
+        gateways = new HashMap<>();
         databaseConnection = new DatabaseConnection(configuration);
         centralDatabase = new Database (configuration.getCentralDatabaseName(), databaseConnection);
         centralDatabase.createDatabase();
         centralDatabase.useDatabase();
         createCentralDataLedger();
-        assignIDsToGateways();
     }
 
-    private void assignIDsToGateways(){
-        int counter = 0;
-        for (Gateway g : gateways){
-            g.setGatewayID(counter++);
-            g.initialiseGatewayDatabase();
+    public void connectGateway(Gateway gateway){
+        if (configuration.getNumberOfGateways() > numberOfConnectedGateways){
+            gateway.initialiseGatewayDatabase();
+            gateways.put(gateway.getGatewayID(), gateway);
+            numberOfConnectedGateways++;
+        }
+    }
+
+    public void removeGateway(Gateway gateway){
+        if (numberOfConnectedGateways > 0){
+            if (gateways.containsKey(gateway.getGatewayID())) gateways.remove(gateway.getGatewayID());
+            gateway.removeGatewayDatabase();
         }
     }
 
