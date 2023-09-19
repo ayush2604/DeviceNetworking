@@ -3,15 +3,15 @@
     "gatewayDatabaseName":"gatewayDatabase",
     "tableName":"DataLedger",
     "centralDataLedgerSchema":[
-        {"columnName":"FROM_DEVICE","dataType":"VARCHAR(32)"},
-        {"columnName":"TO_DEVICE","dataType":"VARCHAR(32)"},
+        {"columnName":"FROM_DEVICE","dataType":"INT"},
+        {"columnName":"TO_DEVICE","dataType":"INT"},
         {"columnName":"DATA","dataType":"VARCHAR(32)"},
-        {"columnName":"GATEWAY_ID","dataType":"VARCHAR(32)"},
+        {"columnName":"GATEWAY_ID","dataType":"INT"},
         {"columnName":"METADATA","dataType":"TIMESTAMP"}
     ],
     "gatewayDataLedgerSchema":[
-        {"columnName":"FROM_DEVICE","dataType":"VARCHAR(32)"},
-        {"columnName":"TO_DEVICE","dataType":"VARCHAR(32)"},
+        {"columnName":"FROM_DEVICE","dataType":"INT"},
+        {"columnName":"TO_DEVICE","dataType":"INT"},
         {"columnName":"DATA","dataType":"VARCHAR(32)"},
         {"columnName":"METADATA","dataType":"TIMESTAMP"}
     ],
