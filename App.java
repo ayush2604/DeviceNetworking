@@ -1,11 +1,13 @@
 import src.Cloud;
 import src.Configuration;
 import src.Login;
+import src.Gateway;
 
 public class App {
 
     private String username, password;
     Cloud cloud;
+    Gateway gateway;
     Configuration configuration;
     
     App(){
@@ -18,6 +20,7 @@ public class App {
         }
         configuration = new Configuration(username, password);
         cloud = new Cloud(configuration);
+        gateway = new Gateway(configuration, 0);
     }
 
     private void printStatus() {

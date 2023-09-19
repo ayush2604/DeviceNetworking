@@ -72,12 +72,12 @@ public class Configuration {
         return getCentralDatabaseName() + "_" + getTableName() + "_" + dateToday();
     }
 
-    public String getGatewayDatabaseName(){
-        return (String) jsonobj.get(GATEWAY_DATABASE_NAME);
+    public String getGatewayDatabaseName(int gatewayID){
+        return (String) jsonobj.get(GATEWAY_DATABASE_NAME) + "_" + Integer.toString(gatewayID);
     }
 
-    public String getGatewayDatabaseTableName(){
-        return getGatewayDatabaseName() + "_" + getTableName() + "_" + dateToday();
+    public String getGatewayDatabaseTableName(int gatewayID){
+        return getGatewayDatabaseName(gatewayID) + "_" + getTableName() + "_" + dateToday();
     }
 
     public Map<String,String> getCentralDatabaseSchema(){

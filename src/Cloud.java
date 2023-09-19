@@ -18,7 +18,7 @@ public class Cloud {
         createCentralDataLedger();
     }
 
-    public void createCentralDataLedger(){
+    private void createCentralDataLedger(){
         Map<String,String> schema = configuration.getCentralDatabaseSchema();
         centralDatabase.createTable(configuration.getCentralDatabaseTableName(), schema);
     }   
