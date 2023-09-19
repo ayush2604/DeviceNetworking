@@ -5,29 +5,19 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Login extends JFrame implements ActionListener {
-    JButton b1;  
+    JButton submitButton, closeButton;  
     JPanel newPanel;  
     JLabel userLabel, passLabel;  
-    final JTextField  textField1, textField2;  
+    JTextField  textField1, textField2;  
     String username, password;
     boolean actionPerformed;
 
     public Login(){
-        userLabel = new JLabel();  
-        userLabel.setText("Username");
-        textField1 = new JTextField(15); 
-        passLabel = new JLabel();  
-        passLabel.setText("Password");  
-        textField2 = new JPasswordField(15); 
-        b1 = new JButton("SUBMIT"); 
-        newPanel = new JPanel(new GridLayout(3, 1));  
-        newPanel.add(userLabel);    
-        newPanel.add(textField1);    
-        newPanel.add(passLabel);    
-        newPanel.add(textField2);   
-        newPanel.add(b1);           
+        initialiseLabels();
+        initialiseTextFields();
+        initialiseButtons();
+        initialisePanels();    
         add(newPanel, BorderLayout.CENTER);     
-        b1.addActionListener(this);   
         setTitle("ENTER DATABASE CREDENTIALS");   
         setSize(400,150); 
         setVisible(true); 
@@ -38,19 +28,51 @@ public class Login extends JFrame implements ActionListener {
         actionPerformed = false;
     }
 
+    private void initialiseLabels (){
+        userLabel = new JLabel();
+        passLabel = new JLabel();
+        userLabel.setText("Username");
+        passLabel.setText("Password");
+    }
+
+    private void initialiseTextFields(){
+        textField1 = new JTextField(15);
+        textField2 = new JPasswordField(15); 
+    }
+
+    private void initialiseButtons(){
+        submitButton = new JButton("SUBMIT"); 
+        closeButton = new JButton("CLOSE");
+        submitButton.addActionListener(this);  
+        closeButton.addActionListener(this);
+    }
+
+    private void initialisePanels(){
+        newPanel = new JPanel(new GridLayout(3, 1));  
+        newPanel.add(userLabel);    
+        newPanel.add(textField1);    
+        newPanel.add(passLabel);    
+        newPanel.add(textField2);   
+        newPanel.add(submitButton);
+        newPanel.add(closeButton);
+    }
+
     public void printStatus(){
         System.out.println("Login process initiated.");
     }
 
     public synchronized void actionPerformed(ActionEvent ae) {  
-        String userValue = textField1.getText();        
-        String passValue = textField2.getText();  
-        username = userValue;
-        password = passValue;
-        actionPerformed = true;
-        notifyAll();
-        setVisible(false);
-        dispose();
+        if (ae.getSource() == submitButton){
+            String userValue = textField1.getText();        
+            String passValue = textField2.getText();  
+            username = userValue;
+            password = passValue;
+            actionPerformed = true;
+            notifyAll();
+            setVisible(false);
+            dispose();
+        }
+        else System.exit(0);
     }
     
     public synchronized String getUsername () throws InterruptedException{
