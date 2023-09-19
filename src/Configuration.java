@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import static src.Constants.*;
 
 public class Configuration {
 
@@ -22,12 +23,12 @@ public class Configuration {
     public Configuration(String _username, String _password){
         username = _username;
         password = _password;
-        init();
+        initialise();
     }
 
-    private void init(){
+    private void initialise(){
         JSONParser jsonparser = new JSONParser();
-        try { file = new FileReader("./config/config.json"); }
+        try { file = new FileReader(CONFIGURATION_FILE_PATH); }
         catch(FileNotFoundException fileNotFoundException){
             System.out.println("Configuration file not found.");
         }
@@ -38,23 +39,23 @@ public class Configuration {
         }
     }
 
+    private String getTableName(){
+        return (String) jsonobj.get(TABLE_NAME);
+    }
+
     private String dateToday(){
         Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         return dateFormat.format(date);
     }
 
-    public String getCentralDatabaseTableName(){
-        return getCentralDatabaseName() + "_" + dateToday();
-    }
-
-    public Map<String,String> getCentralDatabaseSchema(String tableName){
+    private Map<String,String> getSchema (String key){
         Map<String,String> schema = new HashMap<>();
-        JSONArray columns = (JSONArray) jsonobj.get("columns");
+        JSONArray columns = (JSONArray) jsonobj.get(key);
         for (int j = 0; j < columns.size(); j++){
             try { 
                 JSONObject columnName = (JSONObject) columns.get(j); 
-                schema.put( (String)columnName.get("columnName"), (String)columnName.get("dataType"));
+                schema.put( (String)columnName.get(COLUMN_NAME), (String)columnName.get(DATATYPE));
             }
             catch (JSONException jsonException){
                 System.out.println("JSON Exception.\nError: " + jsonException);
@@ -64,7 +65,27 @@ public class Configuration {
     }
 
     public String getCentralDatabaseName(){
-        return (String) jsonobj.get("database");
+        return (String) jsonobj.get(CENTRAL_DATABASE_NAME);
+    }
+
+    public String getCentralDatabaseTableName(){
+        return getCentralDatabaseName() + "_" + getTableName() + "_" + dateToday();
+    }
+
+    public String getGatewayDatabaseName(){
+        return (String) jsonobj.get(GATEWAY_DATABASE_NAME);
+    }
+
+    public String getGatewayDatabaseTableName(){
+        return getGatewayDatabaseName() + "_" + getTableName() + "_" + dateToday();
+    }
+
+    public Map<String,String> getCentralDatabaseSchema(){
+        return getSchema(CENTRAL_LEDGER_SCHEMA);
+    }
+
+    public Map<String,String> getGatewayDatabaseSchema(){
+         return getSchema(GATEWAY_LEDGER_SCHEMA);
     }
 
     public String getUsername (){
@@ -76,6 +97,6 @@ public class Configuration {
     }
 
     public long getPortNumber(){
-        return (long) jsonobj.get("portNumber");
+        return (long) jsonobj.get(PORT_NUMBER);
     }
 }

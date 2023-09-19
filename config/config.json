@@ -1,15 +1,19 @@
 {
-    "database":"centralDatabase",
-    "columns":[
+    "centralDatabaseName":"centralDatabase",
+    "gatewayDatabaseName":"gatewayDatabase",
+    "tableName":"DataLedger",
+    "centralDataLedgerSchema":[
+        {"columnName":"FROM_DEVICE","dataType":"VARCHAR(32)"},
+        {"columnName":"TO_DEVICE","dataType":"VARCHAR(32)"},
+        {"columnName":"DATA","dataType":"VARCHAR(32)"},
+        {"columnName":"GATEWAY_ID","dataType":"VARCHAR(32)"},
+        {"columnName":"METADATA","dataType":"TIMESTAMP"}
+    ],
+    "gatewayDataLedgerSchema":[
         {"columnName":"FROM_DEVICE","dataType":"VARCHAR(32)"},
         {"columnName":"TO_DEVICE","dataType":"VARCHAR(32)"},
         {"columnName":"DATA","dataType":"VARCHAR(32)"},
         {"columnName":"METADATA","dataType":"TIMESTAMP"}
     ],
-    "portNumber":3306,
-    "tables":[
-        {
-            "name":"centralDataLedger"
-        }
-    ]
+    "portNumber":3306
 }
