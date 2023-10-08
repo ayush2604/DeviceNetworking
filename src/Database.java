@@ -55,4 +55,15 @@ public class Database {
         query = query.substring(0, query.length() - 1) + " );";
         executeUpdateQuery(query);
     }
+
+    public void updateGatewayDataLedger (Packet packet){
+        this.useDatabase();
+        String fromDevice = Integer.toString(packet.getFromDeviceID());
+        String toDevice = Integer.toString(packet.getToDeviceID());
+        String data = Integer.toString(packet.getData());
+        String query = "INSERT INTO TABLE " + databaseName + 
+                        "(FROM_DEVICE, DATA, TO_DEVICE, METADATA) VALUES (" + 
+                          fromDevice + ", '" + data + "', " + toDevice + ", CURRENT_TIMESTAMP);";
+        executeUpdateQuery(query);
+    }
 }

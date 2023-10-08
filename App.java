@@ -2,17 +2,21 @@ import src.Cloud;
 import src.Configuration;
 import src.Login;
 import src.Gateway;
+import src.Device;
+import java.util.*;
+import java.util.Map.Entry; 
 
 public class App {
 
     private String username, password;
     Cloud cloud;
-    Gateway gateways[];
+    Map<Integer,Gateway> gateways;
     Configuration configuration;
     
     App(){
         loginProcess();
         initialiseGateways();
+        initialiseDevices();
         initialiseCloud();
     }
 
@@ -28,16 +32,30 @@ public class App {
     }
 
     private void initialiseGateways(){
-        gateways = new Gateway[configuration.getNumberOfGateways()];
+        gateways = new HashMap<>();
         for(int i = 0; i < configuration.getNumberOfGateways(); i++) {
-            gateways[i] = new Gateway(configuration);
-            gateways[i].setGatewayID(i);
+            Gateway gateway = new Gateway(configuration);
+            gateway.setGatewayID(i);
+            gateways.put(gateway.getGatewayID(), gateway);
+        }
+    }
+
+    private void initialiseDevices(){
+        int deviceID = 0;
+        for(Entry<Integer,Gateway> entry: gateways.entrySet()) {
+            for (int i = 0; i < configuration.getNumberOfDevicesInGateway(); i++) {
+                Gateway gateway = entry.getValue();
+                Device device = new Device(configuration);
+                device.setDeviceID(deviceID++);
+                device.setGatewayID(gateway.getGatewayID());
+                device.getGateways(gateways);
+                gateway.connectDevice(device);
+            }
         }
     }
 
     private void initialiseCloud(){
-        cloud = new Cloud(configuration);
-        for(Gateway gateway : gateways) cloud.connectGateway(gateway);
+        cloud = new Cloud(configuration, gateways);
     }
 
     private void printStatus() {

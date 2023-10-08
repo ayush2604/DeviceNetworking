@@ -11,10 +11,10 @@ public class Cloud {
     DatabaseConnection databaseConnection;
     Configuration configuration;
 
-    public Cloud(Configuration _configuration){
+    public Cloud(Configuration _configuration, Map<Integer, Gateway> _gateways){
         configuration = _configuration;
         numberOfConnectedGateways = 0;
-        gateways = new HashMap<>();
+        gateways = _gateways;
         databaseConnection = new DatabaseConnection(configuration);
         centralDatabase = new Database (configuration.getCentralDatabaseName(), databaseConnection);
         centralDatabase.createDatabase();
@@ -32,8 +32,10 @@ public class Cloud {
 
     public void removeGateway(Gateway gateway){
         if (numberOfConnectedGateways > 0){
-            if (gateways.containsKey(gateway.getGatewayID())) gateways.remove(gateway.getGatewayID());
-            gateway.removeGatewayDatabase();
+            if (gateways.containsKey(gateway.getGatewayID())) {
+                gateways.remove(gateway.getGatewayID());
+                gateway.removeGatewayDatabase();
+            }
         }
     }
 
